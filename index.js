@@ -404,12 +404,11 @@ function version(program, projectPath) {
 				const plistFilenames = getPlistFilenames(xcode);
 
 				xcode.document.projects.forEach(project => {
-						project.targets.filter(Boolean).forEach(target => {
-							target.buildConfigurationsList.buildConfigurations.forEach(
-								config => {
-									// neverIncrementBuild 옵션이 설정되어있지 않을때에만 빌드넘버를 변경합니다.
-									if(!programOpts.neverIncrementBuild){
-
+					project.targets.filter(Boolean).forEach(target => {
+						target.buildConfigurationsList.buildConfigurations.forEach(
+							config => {
+								// neverIncrementBuild 옵션이 설정되어있지 않을때에만 빌드넘버를 변경합니다.
+								if (!programOpts.neverIncrementBuild) {
 									const CURRENT_PROJECT_VERSION = getNewVersionCode(
 										programOpts,
 										parseInt(
@@ -421,16 +420,15 @@ function version(program, projectPath) {
 										appPkg.version,
 										programOpts.resetBuild
 									);
-										config.patch({
-											buildSettings: {
-												CURRENT_PROJECT_VERSION,
-											}
-										});
-									}
+									config.patch({
+										buildSettings: {
+											CURRENT_PROJECT_VERSION
+										}
+									});
+								}
 
-									// incrementBuild 옵션이 설정되어있지 않을때에만 빌드넘버를 변경합니다.
-									if(!programOpts.incrementBuild){
-
+								// incrementBuild 옵션이 설정되어있지 않을때에만 빌드넘버를 변경합니다.
+								if (!programOpts.incrementBuild) {
 									const MARKETING_VERSION = appPkg.version;
 
 									config.patch({
@@ -438,10 +436,10 @@ function version(program, projectPath) {
 											MARKETING_VERSION
 										}
 									});
-									}
 								}
-							);
-						});
+							}
+						);
+					});
 
 					const plistFiles = plistFilenames.map(filename => {
 						return fs.readFileSync(
